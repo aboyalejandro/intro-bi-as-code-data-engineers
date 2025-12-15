@@ -1,0 +1,15 @@
+marketing_analytics:
+  target: prod
+  outputs:
+    prod:
+      type: duckdb
+      path: "{{ env_var('DBT_OUTPUT_PATH', 'marketing.duckdb') }}"
+      schema: main
+      threads: 4
+      extensions:
+        - httpfs
+        - parquet
+      settings:
+        s3_region: "{{ env_var('AWS_REGION', 'us-east-1') }}"
+        s3_access_key_id: "{{ env_var('AWS_ACCESS_KEY_ID') }}"
+        s3_secret_access_key: "{{ env_var('AWS_SECRET_ACCESS_KEY') }}"
