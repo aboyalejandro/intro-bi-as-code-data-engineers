@@ -1,0 +1,5 @@
+# This file was automatically generated
+name: marketing
+type: duckdb
+options:
+  filename: marketing.duckdb
