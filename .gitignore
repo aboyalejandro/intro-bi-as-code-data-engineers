@@ -20,3 +20,14 @@ reports/.evidence/
 
 # OS
 .DS_Store
+
+.evidence/template
+.svelte-kit
+build
+node_modules
+.DS_Store
+static/data
+*.options.yaml
+
+.evidence/meta
+reports/sources/marketing/connection.yaml
