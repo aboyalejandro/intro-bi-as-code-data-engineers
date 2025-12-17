@@ -1,9 +1,0 @@
-name: marketing
-type: postgres
-options:
-  host: mainline.proxy.rlwy.net
-  port: 28182
-  user: postgres
-  password: qvhsZDUcbHkbJRSpxWzeSArmuUwbLqjd
-  database: ducklake_catalog
-  ssl: no-verify

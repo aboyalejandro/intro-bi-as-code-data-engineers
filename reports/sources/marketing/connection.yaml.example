@@ -1,0 +1,8 @@
+name: marketing
+type: postgres
+options:
+  host: 
+  port: 
+  user: 
+  password: 
+  database: 
