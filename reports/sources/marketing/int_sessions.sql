@@ -1,1 +1,1 @@
-SELECT * FROM int_sessions
+SELECT * FROM marketing.int_sessions

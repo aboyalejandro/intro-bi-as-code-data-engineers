@@ -1,1 +1,1 @@
-SELECT * FROM int_conversions
+SELECT * FROM marketing.int_conversions

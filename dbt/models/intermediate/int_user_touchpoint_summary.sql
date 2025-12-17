@@ -13,6 +13,6 @@ select
     count(distinct channel) as channels_used,
     min(timestamp) as first_touch_date,
     max(timestamp) as last_touch_date,
-    datediff('day', min(timestamp), max(timestamp)) as journey_length_days
+    EXTRACT(DAY FROM max(timestamp) - min(timestamp))::int as journey_length_days
 from touchpoints
 group by user_id

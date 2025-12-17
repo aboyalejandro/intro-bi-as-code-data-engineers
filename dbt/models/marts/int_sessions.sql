@@ -1,7 +1,7 @@
 {{ config(materialized='table') }}
 
 with sessions as (
-    select * from {{ ref('base_sessions') }}
+    select * from {{ source('marketing_raw', 'sessions') }}
 ),
 
 sessions_formatted as (
@@ -13,7 +13,7 @@ sessions_formatted as (
         channel || ' / organic' as source_medium,
         '/' as landing_page,
         session_start,
-        session_start + interval (session_duration_sec) second as session_end,
+        session_start + (session_duration_sec * interval '1 second') as session_end,
         pages_viewed,
         session_duration_sec as time_on_site_seconds,
         case when session_duration_sec < 10 and pages_viewed <= 1 then true else false end as bounce,

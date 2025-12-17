@@ -1,0 +1,22 @@
+# dbt
+dbt/logs/*
+dbt/target/*
+dbt/dbt_packages/*
+dbt/.user.yml
+
+# Environment
+.env
+venv/
+
+# IDE
+.vscode/
+
+# Claude Code
+.claude/
+
+# Evidence
+reports/node_modules/
+reports/.evidence/
+
+# OS
+.DS_Store

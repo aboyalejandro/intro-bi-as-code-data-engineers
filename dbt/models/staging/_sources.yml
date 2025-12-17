@@ -3,8 +3,7 @@ version: 2
 sources:
   - name: marketing_raw
     description: Raw marketing data tables from synthetic data generator
-    database: synthetic_data_lakehouse
-    schema: raw
+    schema: marketing
 
     tables:
       - name: campaigns_daily

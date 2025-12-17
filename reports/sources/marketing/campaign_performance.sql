@@ -1,1 +1,1 @@
-SELECT * FROM campaign_performance
+SELECT * FROM marketing.campaign_performance

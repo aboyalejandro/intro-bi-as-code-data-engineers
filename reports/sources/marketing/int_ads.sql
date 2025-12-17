@@ -1,1 +1,1 @@
-SELECT * FROM int_ads
+SELECT * FROM marketing.int_ads

@@ -1,11 +1,11 @@
 {{ config(materialized='table') }}
 
 with conversions as (
-    select * from {{ ref('base_conversions') }}
+    select * from {{ source('marketing_raw', 'conversions') }}
 ),
 
 sessions as (
-    select * from {{ ref('base_sessions') }}
+    select * from {{ source('marketing_raw', 'sessions') }}
 ),
 
 conversions_with_details as (

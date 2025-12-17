@@ -1,15 +1,15 @@
 {{ config(materialized='table') }}
 
 with ad_creatives as (
-    select * from {{ ref('base_ad_creatives') }}
+    select * from {{ source('marketing_raw', 'ad_creatives') }}
 ),
 
 sessions as (
-    select * from {{ ref('base_sessions') }}
+    select * from {{ source('marketing_raw', 'sessions') }}
 ),
 
 conversions as (
-    select * from {{ ref('base_conversions') }}
+    select * from {{ source('marketing_raw', 'conversions') }}
 ),
 
 -- Count conversions by creative through sessions

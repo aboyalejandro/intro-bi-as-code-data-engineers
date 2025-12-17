@@ -1,5 +1,9 @@
-# This file was automatically generated
 name: marketing
-type: duckdb
+type: postgres
 options:
-  filename: marketing.duckdb
+  host: mainline.proxy.rlwy.net
+  port: 28182
+  user: postgres
+  password: qvhsZDUcbHkbJRSpxWzeSArmuUwbLqjd
+  database: ducklake_catalog
+  ssl: no-verify
