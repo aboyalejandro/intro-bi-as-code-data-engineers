@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: marketing-postgres
+    environment:
+      POSTGRES_DB: marketing
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - marketing_network
+
+  seeder:
+    build:
+      context: .
+      target: seeder
+    container_name: marketing-seeder
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: marketing
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - marketing_network
+
+  dbt:
+    build:
+      context: .
+      target: dbt
+    container_name: marketing-dbt
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: marketing
+    depends_on:
+      seeder:
+        condition: service_completed_successfully
+    networks:
+      - marketing_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  marketing_network:
+    driver: bridge
