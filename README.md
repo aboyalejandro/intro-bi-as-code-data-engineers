@@ -4,6 +4,8 @@ Interactive marketing dashboards powered by **dbt** + **PostgreSQL** + **Evidenc
 
 Loads synthetic marketing data from a public S3 bucket, transforms it with dbt, and serves it through Evidence.dev.
 
+<img width="741" height="424" alt="Captura de pantalla 2026-01-31 a las 23 27 28" src="https://github.com/user-attachments/assets/693aef0a-6adf-4a23-8e97-ddb17fa19b5d" />
+
 ## Prerequisites
 
 - Docker
