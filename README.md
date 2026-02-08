@@ -16,9 +16,32 @@ Loads synthetic marketing data from a public S3 bucket, transforms it with dbt, 
 ```bash
 # 1. Start database and load data
 docker compose up
+```
 
-# 2. Start dashboard (in new terminal)
-cd reports && npm install & npm run sources && npm run dev
+**2. Configure Evidence connection (one-time setup)**
+
+Copy the example file:
+```bash
+cp reports/sources/marketing/connection.yaml.example reports/sources/marketing/connection.yaml
+```
+
+Then edit `reports/sources/marketing/connection.yaml` with these values:
+
+```yaml
+name: marketing
+type: postgres
+options:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  database: marketing
+```
+
+**3. Start the dashboard**
+
+```bash
+cd reports && npm install && npm run sources && npm run dev
 ```
 
 Open http://localhost:3000
