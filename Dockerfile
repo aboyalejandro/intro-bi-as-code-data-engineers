@@ -1,4 +1,4 @@
-FROM python:3.11-slim as base
+FROM python:3.11-slim AS base
 
 WORKDIR /app
 
@@ -7,12 +7,12 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Seeder stage
-FROM base as seeder
+FROM base AS seeder
 COPY config.py seed.py ./
 CMD ["python3", "seed.py"]
 
 # dbt stage
-FROM base as dbt
+FROM base AS dbt
 COPY dbt/ ./dbt/
 WORKDIR /app/dbt
 CMD ["dbt", "run", "--profiles-dir", "."]
