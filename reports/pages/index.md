@@ -2,7 +2,7 @@
 title: Marketing Analytics Dashboard
 ---
 
-Powered by **dbt** + **Evidence.dev** + **DuckDB**
+Powered by **dbt** + **Evidence.dev** + **PostgreSQL**
 
 ## Overview Metrics
 

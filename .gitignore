@@ -17,6 +17,7 @@ venv/
 # Evidence
 reports/node_modules/
 reports/.evidence/
+package-lock.json
 
 # OS
 .DS_Store
