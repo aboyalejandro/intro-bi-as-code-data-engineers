@@ -1,31 +1,40 @@
-# BI-as-Code: Marketing Analytics
+# 📊 BI as Code: Marketing Analytics with Evidence.dev
 
-Interactive marketing dashboards powered by **dbt** + **PostgreSQL** + **Evidence.dev**.
+Interactive marketing dashboards built entirely with SQL and Markdown — powered by **dbt** + **PostgreSQL** + **Evidence.dev**.
 
-Loads synthetic marketing data from a public S3 bucket, transforms it with dbt, and serves it through Evidence.dev.
+A BI-as-Code stack that:
+- Seeds synthetic marketing data from a public S3 bucket into PostgreSQL using DuckDB
+- Runs dbt transformations (staging → intermediate → marts)
+- Serves interactive dashboards through Evidence.dev — just SQL queries inside Markdown files
+- Runs locally with Docker Compose, no cloud accounts needed
 
-<img width="741" height="424" alt="Captura de pantalla 2026-01-31 a las 23 27 28" src="https://github.com/user-attachments/assets/693aef0a-6adf-4a23-8e97-ddb17fa19b5d" />
+<img width="741" height="424" alt="dashboard-overview" src="https://github.com/user-attachments/assets/693aef0a-6adf-4a23-8e97-ddb17fa19b5d" />
 
-## Prerequisites
+## 🙋🏻‍♂️ Prerequisites
 
-- Docker
+- Docker Desktop
 - Node.js 18+
 
-## Setup
+## 📝 Steps
+
+### 1. Start database, seed data and run dbt
 
 ```bash
-# 1. Start database and load data
 docker compose up
 ```
 
-**2. Configure Evidence connection (one-time setup)**
+This starts:
+- PostgreSQL with ~400K rows from S3
+- dbt (17 analytics models)
+- Evidence.dev-ready data in `marketing` schema
 
-Copy the example file:
+### 2. Configure Evidence connection (one-time setup)
+
 ```bash
 cp reports/sources/marketing/connection.yaml.example reports/sources/marketing/connection.yaml
 ```
 
-Then edit `reports/sources/marketing/connection.yaml` with these values:
+The default values match the Docker Compose setup:
 
 ```yaml
 name: marketing
@@ -38,7 +47,9 @@ options:
   database: marketing
 ```
 
-**3. Start the dashboard**
+### 3. Start the dashboard
+
+On another terminal, run:
 
 ```bash
 cd reports && npm install && npm run sources && npm run dev
@@ -46,18 +57,40 @@ cd reports && npm install && npm run sources && npm run dev
 
 Open http://localhost:3000
 
-## Architecture
+## 🏗️ Architecture
 
 ```
+S3 (Parquet files)
+    ↓
 Docker Compose
 ├── PostgreSQL (raw data)
-├── Seeder (loads from S3)
-└── dbt (transforms data)
+├── Seeder (S3 → Postgres via DuckDB)
+└── dbt (17 models: staging → intermediate → marts)
          ↓
 Evidence.dev (local) → localhost:3000
 ```
 
-## Dashboards
+```text
+├── dbt/
+│   └── models/
+│       ├── staging/           # Clean and standardize raw tables
+│       ├── intermediate/      # Business logic and enrichment
+│       └── marts/             # Final aggregations for dashboards
+├── reports/
+│   └── pages/
+│       ├── index.md           # Overview with KPIs
+│       ├── channels.md        # Channel performance
+│       ├── conversions.md     # Conversion timeline
+│       ├── creative.md        # Creative analysis
+│       └── engagement.md      # Session & device analysis
+├── config.py                  # S3 bucket and table configuration
+├── seed.py                    # DuckDB-based S3 → PostgreSQL seeder
+├── docker-compose.yml
+├── Dockerfile
+└── requirements.txt
+```
+
+## 📈 Dashboards
 
 | Page | Description |
 |------|-------------|
@@ -67,8 +100,14 @@ Evidence.dev (local) → localhost:3000
 | **Conversions** | Daily conversion timeline by channel |
 | **Engagement** | Device-based session analysis |
 
-## Reset Everything
+## 🧹 Cleanup
 
 ```bash
 docker compose down -v
 ```
+
+### 😎 Follow me on [Linkedin](https://linkedin.com/in/alejandro-aboy)
+- Get tips, learnings and tricks for your Data career!
+
+### 📩 Subscribe to [The Pipe & The Line](https://thepipeandtheline.substack.com)
+- Join the Substack newsletter to get similar content to this one and more to improve your Data career!

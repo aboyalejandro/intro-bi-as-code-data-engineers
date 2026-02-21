@@ -1,26 +1,27 @@
 """
-Configuration for seeding PostgreSQL from public S3 bucket.
+Shared configuration for seed scripts.
 """
 
 import os
 
-# Public S3 bucket (no credentials required)
+# S3 Configuration
 S3_BUCKET = "s3://synthetic-data-lakehouse/marketing"
 
-# Marketing tables to seed
+# Tables to seed (matching dbt sources.yml)
 TABLES = [
     "campaigns_daily",
     "ad_creatives",
     "sessions",
+    "attribution_touchpoints",
     "conversions",
-    "attribution_touchpoints"
+    "metadata_snapshots"
 ]
 
-# PostgreSQL configuration (Docker defaults)
+# PostgreSQL configuration
 POSTGRES_CONFIG = {
-    "host": os.getenv("POSTGRES_HOST", "localhost"),
-    "port": int(os.getenv("POSTGRES_PORT", "5432")),
-    "database": os.getenv("POSTGRES_DB", "marketing"),
-    "user": os.getenv("POSTGRES_USER", "postgres"),
-    "password": os.getenv("POSTGRES_PASSWORD", "postgres")
+    "host": os.environ.get("POSTGRES_HOST", "localhost"),
+    "port": int(os.environ.get("POSTGRES_PORT", "5432")),
+    "database": os.environ.get("POSTGRES_DB", "marketing"),
+    "user": os.environ.get("POSTGRES_USER", "postgres"),
+    "password": os.environ.get("POSTGRES_PASSWORD", "postgres")
 }

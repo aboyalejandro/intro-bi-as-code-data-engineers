@@ -1,7 +1,6 @@
 """
-Seed PostgreSQL database with marketing data from public S3 using DuckDB.
+Seed PostgreSQL database with marketing data from S3 using DuckDB.
 Reads Parquet files from s3://synthetic-data-lakehouse/marketing/ and loads into local Postgres.
-No AWS credentials required - bucket is public.
 """
 
 import duckdb
@@ -37,30 +36,23 @@ def seed_table(table_name):
     duck.execute("LOAD postgres;")
     print("  Extensions loaded (httpfs for S3, postgres for DB)")
 
-    # Configure S3 for anonymous access (public bucket)
+    # Configure S3 for public bucket access
     duck.execute("SET s3_region='eu-west-3';")
-    duck.execute("SET s3_url_style='path';")
+    duck.execute("SET s3_endpoint='s3.eu-west-3.amazonaws.com';")
     duck.execute("SET s3_access_key_id='';")
     duck.execute("SET s3_secret_access_key='';")
-    print("  Configured for anonymous S3 access (public bucket)")
 
     # Try reading from S3 with fallback patterns
     s3_path = f"{S3_BUCKET}/{table_name}/**/*.parquet"
     print(f"  Reading from: {s3_path}")
 
     try:
-        duck.execute(f"CREATE TABLE temp_{table_name} AS SELECT * FROM read_parquet('{s3_path}');")
-    except Exception as e:
+        duck.execute(f"CREATE TABLE temp_{table_name} AS SELECT * FROM read_parquet('{s3_path}', union_by_name=true);")
+    except:
         # Try without subdirectory pattern
         s3_path = f"{S3_BUCKET}/{table_name}/*.parquet"
         print(f"  Trying alternate path: {s3_path}")
-        try:
-            duck.execute(f"CREATE TABLE temp_{table_name} AS SELECT * FROM read_parquet('{s3_path}');")
-        except Exception as e2:
-            # Try direct path without wildcard
-            s3_path = f"{S3_BUCKET}/{table_name}.parquet"
-            print(f"  Trying direct file: {s3_path}")
-            duck.execute(f"CREATE TABLE temp_{table_name} AS SELECT * FROM read_parquet('{s3_path}');")
+        duck.execute(f"CREATE TABLE temp_{table_name} AS SELECT * FROM read_parquet('{s3_path}', union_by_name=true);")
 
     # Get row count
     row_count = duck.execute(f"SELECT COUNT(*) FROM temp_{table_name}").fetchone()[0]
@@ -94,9 +86,9 @@ def seed_table(table_name):
 def main():
     """Main seeding process."""
     print("="*60)
-    print("PostgreSQL Data Seeding from Public S3")
+    print("PostgreSQL Data Seeding from S3")
     print("="*60)
-    print(f"Source: {S3_BUCKET} (public bucket)")
+    print(f"Source: {S3_BUCKET}")
     print(f"Target: {POSTGRES_CONFIG['host']}:{POSTGRES_CONFIG['port']}/{POSTGRES_CONFIG['database']}")
     print(f"Schema: marketing")
     print(f"Tables: {len(TABLES)}")

@@ -11,8 +11,8 @@ select
     count(distinct session_id) as total_sessions,
     count(distinct campaign_id) as campaigns_touched,
     count(distinct channel) as channels_used,
-    min(timestamp) as first_touch_date,
-    max(timestamp) as last_touch_date,
-    EXTRACT(DAY FROM max(timestamp) - min(timestamp))::int as journey_length_days
+    min(timestamp::timestamp) as first_touch_date,
+    max(timestamp::timestamp) as last_touch_date,
+    EXTRACT(DAY FROM max(timestamp::timestamp) - min(timestamp::timestamp))::int as journey_length_days
 from touchpoints
 group by user_id
